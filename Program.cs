@@ -11,14 +11,14 @@ using Microsoft.AspNetCore.Http.Features;
 
 //var dogRepositorySql = new SqlRepository<Dog>(new AnimalShelterDbContext());
 //var employeeRepositorySql = new SqlRepository<Employee>(new AnimalShelterDbContext());
-var employeeRepositoryJson = new FileRepository<Employee>();
-var dogRepositoryJson = new FileRepository<Dog>();
+var employeeRepoJson = new FileRepository<Employee>();
+var dogRepoJson = new FileRepository<Dog>();
 
-dogRepositoryJson.ItemAdded += DogRepositoryOnItemAdded;
-dogRepositoryJson.ItemRemoved += DogRepositoryOnItemRemoved;
+dogRepoJson.ItemAdded += DogRepositoryOnItemAdded;
+dogRepoJson.ItemRemoved += DogRepositoryOnItemRemoved;
 
-employeeRepositoryJson.ItemAdded += EmplyeeRepositoryOnItemAdded;
-employeeRepositoryJson.ItemRemoved += EmplyeeRepositoryOnItemRemoved;
+employeeRepoJson.ItemAdded += EmplyeeRepositoryOnItemAdded;
+employeeRepoJson.ItemRemoved += EmplyeeRepositoryOnItemRemoved;
 //employeeRepositoryJson.ItemAdded += EmloyeeSaveToFileChanges;
 
 static void DogRepositoryOnItemAdded(object? sender, Dog d)
@@ -37,7 +37,7 @@ static void EmplyeeRepositoryOnItemAdded(object? sender, Employee e)
 }
 static void EmplyeeRepositoryOnItemRemoved(object? sender, Employee e)
 {
-    Console.WriteLine($"Employee added => {e.Name} from {sender?.GetType().Name}");
+    Console.WriteLine($"Employee removed => {e.Name} from {sender?.GetType().Name}");
 }
 
 //static void EmloyeeSaveToFileChanges(object? sender, Employee e)
@@ -50,59 +50,6 @@ static void EmplyeeRepositoryOnItemRemoved(object? sender, Employee e)
 //    }
 //}
 
-//static void DogRepositoryMale(IRepository<Dog> dogRepository)
-//{
-//    var items = dogRepository.GetAll();
-
-//    foreach (var item in items)
-//    {
-//        if (item.Gender=="M")
-//        {
-//            Console.WriteLine($"Dog Male => {item.Id}, {item.Name}");
-//        }
-//    }
-//}
-
-//static void DogRepositoryFemale(IRepository<Dog> dogRepository)
-//{
-//    var items = dogRepository.GetAll();
-
-//    foreach (var item in items)
-//    {
-//        if (item.Gender=="F")
-//        {
-//            Console.WriteLine($"Dog Female => {item.Id}, {item.Name}");
-//        }
-//    }
-//}
-
-//var volunteerRepository = new SqlRepository<Volunteer>(new AnimalShelterDbContext());
-//var foodRepository = new SqlRepository<Food>(new AnimalShelterDbContext());
-//var medicamentRepository = new SqlRepository<Medicament>(new AnimalShelterDbContext());
-
-//static void WriteAllToConsole(IReadRepository<IEntity> repository)
-//{
-//    var items = repository.GetAll();
-
-//    foreach (var item in items)
-//    {
-//        Console.WriteLine(item);
-//    }
-//}
-static void ReadAllToConsole(IReadRepository<IEntity> repository)
-{
-    var items = repository.Read();
-
-    if (items!=null)
-    {
-        foreach (var item in items)
-        {
-            Console.WriteLine(item);
-        }
-    }
-    Console.WriteLine("Empty file");
-}
-
 static void AddDog(IRepository<Dog> dogRepository)
 {
     while (true)
@@ -113,7 +60,7 @@ static void AddDog(IRepository<Dog> dogRepository)
         Console.WriteLine("Dog gender: F or M");
         var doggender = CheckIsNullOrEmptyAndUpper();
 
-        if (doggender!="M" && doggender!="F")
+        while(doggender!="M" && doggender!="F")
         {
             Console.WriteLine("Incorect information.");
             doggender = CheckIsNullOrEmptyAndUpper();
@@ -148,38 +95,6 @@ static void AddEmployee(IRepository<Employee> employeeRepository)
     }
 }
 
-static T? FindEntityById<T>(IRepository<T> repository) where T : class, IEntity
-{
-    while (true)
-    {
-        Console.WriteLine($"Enter the Id number of the item in {typeof(T).Name}");
-        var idInput = Console.ReadLine();
-        int idValue = 0;
-
-        var idEntityYouWant = int.TryParse(idInput, out idValue);
-
-        if (!idEntityYouWant)
-        {
-            Console.WriteLine("Give me natural number");
-        }
-        else
-        {
-            var items = repository.Read();
-            var result = repository.GetById(idValue);
-
-            if (result == null)
-            {
-                Console.WriteLine($"There is no element in the {idValue} position in {typeof(T).Name}. ");
-            }
-            else
-            {
-                Console.WriteLine(repository.GetById(idValue));
-            }
-            return result;
-        }
-    }
-}
-
 Console.WriteLine("Welcome to the database Animal Shelter");
 Console.WriteLine(
     "---Menu--- \n" +
@@ -197,88 +112,109 @@ while (true)
     switch (input)
     {
         case "1":
-            Console.WriteLine("D - View all dogs\n" +
-                "E - View all employees\n" +
-                "Any Other key - leave and go to MENU");
+            Console.WriteLine(
+                "\tD - View all dogs\n" +
+                "\tE - View all employees\n" +
+                "\tAny Other key - leave and go to MENU");
 
             var viewEntity = CheckIsNullOrEmptyAndUpper();
 
             if (viewEntity == "D")
             {
-                ReadAllToConsole(dogRepositoryJson);
+                dogRepoJson.ReadAllToConsole(dogRepoJson);
             }
 
             if (viewEntity == "E")
             {
-                ReadAllToConsole(employeeRepositoryJson);
+                employeeRepoJson.ReadAllToConsole(employeeRepoJson);
             }
             break;
 
         case "2":
 
-            Console.WriteLine("D - View dog by Id\n" +
-                "E - View employee by Id\n" +
-                "Any Other key - leave and go to MENU");
+            Console.WriteLine(
+                "\tD - View dog by Id\n" +
+                "\tE - View employee by Id\n" +
+                "\tAny Other key - leave and go to MENU");
 
             var viewIdEntity = CheckIsNullOrEmptyAndUpper();
 
             if (viewIdEntity == "D")
             {
-                FindEntityById(dogRepositoryJson);
+                dogRepoJson.FindEntityById(dogRepoJson);
             }
 
             if (viewIdEntity == "E")
             {
-                FindEntityById(employeeRepositoryJson);
+                dogRepoJson.FindEntityById(employeeRepoJson);
             }
             break;
 
         case "3":
-            Console.WriteLine("A - add \n" +
-                "R - remove \n" +
-                "Any Other key - leave and go to MENU");
+            Console.WriteLine(
+                "\tA - add \n" +
+                "\tR - remove \n" +
+                "\tAny Other key - leave and go to MENU");
 
             var changeData = CheckIsNullOrEmptyAndUpper();
 
             if (changeData == "A")
             {
-                Console.WriteLine("D - add dog\n" +
-                "E - add employee\n" +
-                "Any Other key - leave and go to MENU");
+                Console.WriteLine(
+                "\tD - add dog\n" +
+                "\tE - add employee\n" +
+                "\tAny Other key - leave and go to MENU");
 
                 var changeDataEntity = CheckIsNullOrEmptyAndUpper();
 
 
                 if (changeDataEntity == "D")
                 {
-                    AddDog(dogRepositoryJson);
+                    AddDog(dogRepoJson);
                 }
 
                 if (changeDataEntity == "E")
                 {
-                    AddEmployee(employeeRepositoryJson);
+                    AddEmployee(employeeRepoJson);
                 }
             }
             if (changeData == "R")
             {
-                Console.WriteLine("D - add dog\n" +
-                "E - add employee\n" +
-                "Any Other key - leave and go to MENU");
+                Console.WriteLine(
+                "\tD - remove dog\n" +
+                "\tE - remove employee\n" +
+                "\tAny Other key - leave and go to MENU");
 
                 var changeDataEntity = CheckIsNullOrEmptyAndUpper();
 
                 if (changeDataEntity == "D")
                 {
-                    var result = FindEntityById(dogRepositoryJson);
-                    dogRepositoryJson.Remove(result);
-                    dogRepositoryJson.Save();
+                    var result = dogRepoJson.FindEntityById(dogRepoJson);
+                    if (result!=null)
+                    {
+                        dogRepoJson.Remove(result);
+                        dogRepoJson.Save();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Try again or search the base. Select 1 then D");
+                    }
                 }
 
                 if (changeDataEntity == "E")
                 {
-                    var result = FindEntityById(employeeRepositoryJson);
-                    employeeRepositoryJson.Remove(result);
-                    employeeRepositoryJson.Save();
+
+                    var result = employeeRepoJson.FindEntityById(employeeRepoJson);
+                    if (result!=null)
+                    {
+
+                        employeeRepoJson.Remove(result);
+                        employeeRepoJson.Save();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Try again or search the base. Select 1 then E");
+                    }
                 }
             }
             break;
@@ -299,6 +235,7 @@ static string CheckIsNullOrEmptyAndUpper()
     while (String.IsNullOrEmpty(input))
     {
         Console.WriteLine("Give correct value");
+        break;
     }
     return input;
 }

@@ -4,7 +4,6 @@ namespace AnimalShelter.Entities
 {
     public class Employee : EntityBase
     {
-        
         public string? Name { get; set; }
         public string? SurName { get; set; }
         public string? Education { get; set; }

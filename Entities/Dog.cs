@@ -1,5 +1,4 @@
 ﻿namespace AnimalShelter.Entities;
-
 public class Dog : EntityBase
 {
     public string? Name { get; set; }
