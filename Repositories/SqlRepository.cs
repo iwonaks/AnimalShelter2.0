@@ -56,5 +56,3 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
         return _dbSet.ToList();
     }
 }
-
-
