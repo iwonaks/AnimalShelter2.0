@@ -8,8 +8,6 @@ public class App : IApp
     private readonly IRepository<Employee> _employeeRepository;
     private readonly IRepository<Dog> _dogRepository;
 
-
-
     public App(IRepository<Employee> employeeRepository, IRepository<Dog> dogRepository)
     {
         _employeeRepository = employeeRepository;
@@ -18,7 +16,6 @@ public class App : IApp
 
     public void Run()
     {
-
         //var dogRepositorySql = new SqlRepository<Dog>(new AnimalShelterDbContext());
         //var employeeRepositorySql = new SqlRepository<Employee>(new AnimalShelterDbContext());
         //var _employeeRepository = new FileRepository<Employee>();
@@ -26,7 +23,6 @@ public class App : IApp
 
         var _specificRepoDog = (FileRepository<Dog>)_dogRepository;
         var _specificRepoEmployee = (FileRepository<Employee>)_employeeRepository;
-
 
         _specificRepoDog.ItemAdded += DogRepositoryOnItemAdded;
         _specificRepoDog.ItemRemoved += DogRepositoryOnItemRemoved;
@@ -91,9 +87,7 @@ public class App : IApp
                     var viewIdEntity = CheckIsNullOrEmptyAndUpper();
 
                     if (viewIdEntity == "D")
-                    {
-                        
-
+                    { 
                         _specificRepoDog.FindEntityById();
                     }
 
