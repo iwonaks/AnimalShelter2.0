@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 var services = new ServiceCollection();
 services.AddSingleton<IApp,App>();
 
-services.AddSingleton<IRepository<Employee>,FileRepository<Employee>>();
-services.AddSingleton<IRepository<Dog>, FileRepository<Dog>>();
+services.AddSingleton<IFileRepository<Employee>,FileRepository<Employee>>();
+services.AddSingleton<IFileRepository<Dog>, FileRepository<Dog>>();
 
 var serviceProvider = services.BuildServiceProvider();
 var app = serviceProvider.GetService<IApp>();

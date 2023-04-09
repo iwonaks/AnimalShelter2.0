@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace AnimalShelter.Repositories
 {
-    public class FileRepository<T> : IRepository<T> where T : class, IEntity, new()
+    public class FileRepository<T> : IFileRepository<T> where T : class, IEntity, new()
     {
         private readonly List<T> _items = new();
 

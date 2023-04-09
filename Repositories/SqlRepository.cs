@@ -12,15 +12,10 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
     private readonly DbSet<T> _dbSet;
     private readonly DbContext _dbContext;
 
-    //private readonly Action<T>? _itemAdded;
-    //private readonly Action<T>? _itemRemoved;
-
     public SqlRepository(DbContext dbContext, Action<T>? ItemAdded = null, Action<T>? ItemRemoved = null)
     {
         _dbContext= dbContext;
         _dbSet= _dbContext.Set<T>();
-        //_itemAdded= ItemAdded;
-        //_itemRemoved=ItemRemoved;
     }
 
     public event EventHandler<T>? ItemAdded;

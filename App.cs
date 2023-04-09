@@ -5,30 +5,25 @@ namespace AnimalShelter;
 
 public class App : IApp
 {
-    private readonly IRepository<Employee> _employeeRepository;
-    private readonly IRepository<Dog> _dogRepository;
+    private readonly IFileRepository<Employee> _employeeRepository;
+    private readonly IFileRepository<Dog> _dogRepository;
 
-    public App(IRepository<Employee> employeeRepository, IRepository<Dog> dogRepository)
+    public App(IFileRepository<Employee> employeeRepository, IFileRepository<Dog> dogRepository)
     {
         _employeeRepository = employeeRepository;
         _dogRepository = dogRepository;
     }
 
     public void Run()
-    {
-        //var dogRepositorySql = new SqlRepository<Dog>(new AnimalShelterDbContext());
-        //var employeeRepositorySql = new SqlRepository<Employee>(new AnimalShelterDbContext());
-        //var _employeeRepository = new FileRepository<Employee>();
-        //var _dogRepository = new FileRepository<Dog>();
+    { 
+        //var _specificRepoDog = (FileRepository<Dog>)_dogRepository;
+        //var _specificRepoEmployee = (FileRepository<Employee>)_employeeRepository;
 
-        var _specificRepoDog = (FileRepository<Dog>)_dogRepository;
-        var _specificRepoEmployee = (FileRepository<Employee>)_employeeRepository;
+        //_specificRepoDog.ItemAdded += DogRepositoryOnItemAdded;
+        //_specificRepoDog.ItemRemoved += DogRepositoryOnItemRemoved;
 
-        _specificRepoDog.ItemAdded += DogRepositoryOnItemAdded;
-        _specificRepoDog.ItemRemoved += DogRepositoryOnItemRemoved;
-
-        _specificRepoEmployee.ItemAdded += EmplyeeRepositoryOnItemAdded;
-        _specificRepoEmployee.ItemRemoved += EmplyeeRepositoryOnItemRemoved;
+        //_specificRepoEmployee.ItemAdded += EmplyeeRepositoryOnItemAdded;
+        //_specificRepoEmployee.ItemRemoved += EmplyeeRepositoryOnItemRemoved;
         //employeeRepositoryJson.ItemAdded += EmloyeeSaveToFileChanges;
 
         Console.WriteLine("Welcome to the database Animal Shelter");
@@ -88,12 +83,12 @@ public class App : IApp
 
                     if (viewIdEntity == "D")
                     { 
-                        _specificRepoDog.FindEntityById();
+                        _dogRepository.FindEntityById();
                     }
 
                     if (viewIdEntity == "E")
                     {
-                        _specificRepoEmployee.FindEntityById();
+                        _employeeRepository.FindEntityById();
                     }
                     break;
 
@@ -136,7 +131,7 @@ public class App : IApp
 
                         if (changeDataEntity == "D")
                         {
-                            var result = _specificRepoDog.FindEntityById();
+                            var result = _dogRepository.FindEntityById();
                             if (result!=null)
                             {
                                 _dogRepository.Remove(result);
@@ -150,7 +145,7 @@ public class App : IApp
 
                         if (changeDataEntity == "E")
                         {
-                            var result = _specificRepoEmployee.FindEntityById();
+                            var result = _employeeRepository.FindEntityById();
                             if (result!=null)
                             {
                                 _employeeRepository.Remove(result);
